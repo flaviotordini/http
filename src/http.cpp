@@ -243,6 +243,8 @@ void NetworkHttpReply::replyError(QNetworkReply::NetworkError code) {
     }
 
     qDebug() << "Retrying" << req.url;
+    networkReply->disconnect();
+    networkReply->deleteLater();
     QNetworkReply *retryReply = http.networkReply(req);
     setParent(retryReply);
     networkReply = retryReply;
