@@ -71,10 +71,6 @@ CachedHttp::CachedHttp(Http &http, const QString &name) :
     http(http),
     cache(LocalCache::instance(name)) { }
 
-CachedHttp::~CachedHttp() {
-    delete cache;
-}
-
 void CachedHttp::setMaxSeconds(uint seconds) {
     cache->setMaxSeconds(seconds);
 }
