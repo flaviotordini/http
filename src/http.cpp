@@ -51,8 +51,6 @@ const QHash<QByteArray, QByteArray> &Http::getDefaultRequestHeaders() {
     static const QHash<QByteArray, QByteArray> defaultRequestHeaders = [] {
         QHash<QByteArray, QByteArray> h;
         h.insert("Accept-Charset", "utf-8");
-        h.insert("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-        h.insert("Accept-Language", "en-us,en;q=0.5");
         h.insert("Connection", "Keep-Alive");
         return h;
     }();
