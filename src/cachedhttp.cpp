@@ -68,6 +68,6 @@ QObject *CachedHttp::request(const HttpRequest &req) {
         // qDebug() << "CachedHttp HIT" << req.url;
         return new CachedHttpReply(cache, key, req);
     }
-    qDebug() << "CachedHttp MISS" << req.url.toString();
+    // qDebug() << "CachedHttp MISS" << req.url.toString();
     return new WrappedHttpReply(cache, key, http.request(req));
 }
