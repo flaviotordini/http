@@ -251,6 +251,9 @@ void NetworkHttpReply::replyError(QNetworkReply::NetworkError code) {
         setupReply();
         retryCount++;
         readTimeoutTimer->start();
+    } else {
+        emitError();
+        return;
     }
 }
 
