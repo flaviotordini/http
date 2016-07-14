@@ -61,7 +61,7 @@ void CachedHttp::setMaxSize(uint maxSize) {
 QObject *CachedHttp::request(const HttpRequest &req) {
     // cache only GET requests
     if (req.operation != QNetworkAccessManager::GetOperation) {
-        return new WrappedHttpReply(cache, key, http.request(req));
+        return http.request(req);
     }
     const QString key = requestHash(req);
     if (cache->isCached(key)) {
