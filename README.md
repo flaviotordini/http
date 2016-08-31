@@ -40,7 +40,6 @@ Http &myHttp() {
 
         CachedHttp *cachedHttp = new CachedHttp(*throttledHttp, "mb");
         cachedHttp->setMaxSeconds(86400 * 30);
-        cachedHttp->setMaxSize(0);
 
         return cachedHttp;
     }();
