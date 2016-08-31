@@ -38,7 +38,7 @@ Http &myHttp() {
         ThrottledHttp *throttledHttp = new ThrottledHttp(*http);
         throttledHttp->setMilliseconds(1000);
 
-        CachedHttp *cachedHttp = new CachedHttp(*throttledHttp, "mb");
+        CachedHttp *cachedHttp = new CachedHttp(*throttledHttp, "mycache");
         cachedHttp->setMaxSeconds(86400 * 30);
 
         return cachedHttp;
