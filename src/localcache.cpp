@@ -13,9 +13,23 @@ LocalCache::LocalCache(const QString &name) : name(name),
     maxSeconds(86400*30),
     maxSize(1024*1024*100),
     size(0),
-    expiring(false) {
+    expiring(false),
+    insertCount(0) {
     directory = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1Char('/') +
             name + QLatin1Char('/');
+}
+
+LocalCache::~LocalCache() {
+#ifndef QT_NO_DEBUG_OUTPUT
+    int total = hits + misses;
+    if (total > 0) {
+        qDebug() << __PRETTY_FUNCTION__
+                 << "Cache:" << name
+                 << "Total:" << total
+                 << QString("Hits: %1").arg((hits*100)/total)
+                 << QString("Misses: %1").arg((misses*100)/total);
+    }
+#endif
 }
 
 QString LocalCache::hash(const QString &s) {
@@ -27,18 +41,28 @@ QString LocalCache::hash(const QString &s) {
 
 bool LocalCache::isCached(const QString &key) {
     QString path = cachePath(key);
-    return (QFile::exists(path) &&
-            (maxSeconds == 0 ||
-             QDateTime::currentDateTime().toTime_t() - QFileInfo(path).created().toTime_t() < maxSeconds));
+    bool cached = (QFile::exists(path) &&
+                   (maxSeconds == 0 ||
+                    QDateTime::currentDateTime().toTime_t() - QFileInfo(path).created().toTime_t() < maxSeconds));
+#ifndef QT_NO_DEBUG_OUTPUT
+    if (!cached) misses++;
+#endif
+    return cached;
 }
 
-QByteArray LocalCache::value(const QString &key) const {
+QByteArray LocalCache::value(const QString &key) {
     QString path = cachePath(key);
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Cannot open" << file.fileName();
+        qWarning() << __PRETTY_FUNCTION__ << file.fileName() << file.errorString();
+#ifndef QT_NO_DEBUG_OUTPUT
+        misses++;
+#endif
         return QByteArray();
     }
+#ifndef QT_NO_DEBUG_OUTPUT
+    hits++;
+#endif
     return file.readAll();
 }
 
@@ -53,8 +77,7 @@ void LocalCache::insert(const QString &key, const QByteArray &value) {
     file.close();
 
     // expire cache every n inserts
-    static uint i = 0;
-    if (maxSize > 0 && ++i % 100 == 0) {
+    if (maxSize > 0 && ++insertCount % 100 == 0) {
         if (size > 0) {
             size += value.size();
             if (size > maxSize) size = expire();
@@ -100,9 +123,15 @@ qint64 LocalCache::expire() {
         qApp->processEvents();
     }
 #ifndef QT_NO_DEBUG_OUTPUT
+    int total = hits + misses;
+    if (total > 0) {
+        qDebug() << "Cache:" << name
+                 << "Requests:" << total
+                 << QString("Hits: %1").arg((hits*100)/total)
+                 << QString("Misses: %1").arg((misses*100)/total);
+    }
     if (removedFiles > 0) {
-        qDebug() << __PRETTY_FUNCTION__
-                 << "Removed:" << removedFiles
+        qDebug() << "Removed:" << removedFiles
                  << "Kept:" << cacheItems.count() - removedFiles
                  << "New Size:" << totalSize;
     }

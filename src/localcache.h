@@ -10,12 +10,13 @@ class LocalCache {
 
 public:
     static LocalCache *instance(const QString &name);
+    ~LocalCache();
     static QString hash(const QString &s);
 
     void setMaxSeconds(uint value) { maxSeconds = value; }
     void setMaxSize(uint value) { maxSize = value; }
     bool isCached(const QString &key);
-    QByteArray value(const QString &key) const;
+    QByteArray value(const QString &key);
     void insert(const QString &key, const QByteArray &value);
 
 private:
@@ -29,6 +30,12 @@ private:
     qint64 maxSize;
     qint64 size;
     bool expiring;
+    uint insertCount;
+
+#ifndef QT_NO_DEBUG_OUTPUT
+    uint hits;
+    uint misses;
+#endif
 
 };
 
