@@ -18,6 +18,7 @@ public:
     bool isCached(const QString &key);
     QByteArray value(const QString &key);
     void insert(const QString &key, const QByteArray &value);
+    bool clear();
 
 private:
     LocalCache(const QString &name);

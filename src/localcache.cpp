@@ -86,6 +86,10 @@ void LocalCache::insert(const QString &key, const QByteArray &value) {
     }
 }
 
+bool LocalCache::clear() {
+    return QDir(directory).removeRecursively();
+}
+
 QString LocalCache::cachePath(const QString &key) const {
     return directory + key;
 }
