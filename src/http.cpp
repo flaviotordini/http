@@ -8,9 +8,9 @@ QNetworkAccessManager* createNetworkAccessManager() {
 }
 
 QNetworkAccessManager *networkAccessManager() {
-    static QHash<QThread*, QNetworkAccessManager*> nams;
+    static QMap<QThread*, QNetworkAccessManager*> nams;
     QThread *t = QThread::currentThread();
-    QHash<QThread*, QNetworkAccessManager*>::const_iterator i = nams.constFind(t);
+    QMap<QThread*, QNetworkAccessManager*>::const_iterator i = nams.constFind(t);
     if (i != nams.constEnd()) return i.value();
     QNetworkAccessManager* nam = createNetworkAccessManager();
     nams.insert(t, nam);
@@ -26,11 +26,11 @@ Http::Http() :
     readTimeout(defaultReadTimeout) {
 }
 
-void Http::setRequestHeaders(const QHash<QByteArray, QByteArray> &headers) {
+void Http::setRequestHeaders(const QMap<QByteArray, QByteArray> &headers) {
     requestHeaders = headers;
 }
 
-QHash<QByteArray, QByteArray> &Http::getRequestHeaders() {
+QMap<QByteArray, QByteArray> &Http::getRequestHeaders() {
     return requestHeaders;
 }
 
@@ -47,9 +47,9 @@ Http &Http::instance() {
     return *i;
 }
 
-const QHash<QByteArray, QByteArray> &Http::getDefaultRequestHeaders() {
-    static const QHash<QByteArray, QByteArray> defaultRequestHeaders = [] {
-        QHash<QByteArray, QByteArray> h;
+const QMap<QByteArray, QByteArray> &Http::getDefaultRequestHeaders() {
+    static const QMap<QByteArray, QByteArray> defaultRequestHeaders = [] {
+        QMap<QByteArray, QByteArray> h;
         h.insert("Accept-Charset", "utf-8");
         h.insert("Connection", "Keep-Alive");
         return h;
@@ -64,10 +64,10 @@ void Http::setDefaultReadTimeout(int timeout) {
 QNetworkReply *Http::networkReply(const HttpRequest &req) {
     QNetworkRequest request(req.url);
 
-    QHash<QByteArray, QByteArray> &headers = requestHeaders;
+    QMap<QByteArray, QByteArray> &headers = requestHeaders;
     if (!req.headers.isEmpty()) headers = req.headers;
 
-    QHash<QByteArray, QByteArray>::const_iterator it;
+    QMap<QByteArray, QByteArray>::const_iterator it;
     for (it = headers.constBegin(); it != headers.constEnd(); ++it)
         request.setRawHeader(it.key(), it.value());
 

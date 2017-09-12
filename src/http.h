@@ -11,20 +11,20 @@ public:
     QNetworkAccessManager::Operation operation;
     QByteArray body;
     uint offset;
-    QHash<QByteArray, QByteArray> headers;
+    QMap<QByteArray, QByteArray> headers;
 };
 
 class Http {
 
 public:
     static Http &instance();
-    static const QHash<QByteArray, QByteArray> &getDefaultRequestHeaders();
+    static const QMap<QByteArray, QByteArray> &getDefaultRequestHeaders();
     static void setDefaultReadTimeout(int timeout);
 
     Http();
 
-    void setRequestHeaders(const QHash<QByteArray, QByteArray> &headers);
-    QHash<QByteArray, QByteArray> &getRequestHeaders();
+    void setRequestHeaders(const QMap<QByteArray, QByteArray> &headers);
+    QMap<QByteArray, QByteArray> &getRequestHeaders();
     void addRequestHeader(const QByteArray &name, const QByteArray &value);
 
     void setReadTimeout(int timeout);
@@ -42,7 +42,7 @@ public:
     QObject *post(const QUrl &url, QByteArray body, const QByteArray &contentType);
 
 private:
-    QHash<QByteArray, QByteArray> requestHeaders;
+    QMap<QByteArray, QByteArray> requestHeaders;
     int readTimeout;
 
 };
