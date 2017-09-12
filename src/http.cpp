@@ -141,7 +141,7 @@ QObject* Http::post(const QUrl &url, const QMap<QString, QString>& params) {
     return request(req);
 }
 
-QObject* Http::post(const QUrl &url, QByteArray body, const QByteArray &contentType) {
+QObject* Http::post(const QUrl &url, const QByteArray &body, const QByteArray &contentType) {
     HttpRequest req;
     req.url = url;
     req.operation = QNetworkAccessManager::PostOperation;

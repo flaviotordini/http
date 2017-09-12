@@ -39,7 +39,7 @@ public:
     QObject* get(const QUrl &url);
     QObject* head(const QUrl &url);
     QObject* post(const QUrl &url, const QMap<QString, QString>& params);
-    QObject *post(const QUrl &url, QByteArray body, const QByteArray &contentType);
+    QObject *post(const QUrl &url, const QByteArray &body, const QByteArray &contentType);
 
 private:
     QMap<QByteArray, QByteArray> requestHeaders;
