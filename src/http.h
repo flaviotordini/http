@@ -4,9 +4,8 @@
 #include <QtNetwork>
 
 class HttpRequest {
-
 public:
-    HttpRequest() : operation(QNetworkAccessManager::GetOperation), offset(0) { }
+    HttpRequest() : operation(QNetworkAccessManager::GetOperation), offset(0) {}
     QUrl url;
     QNetworkAccessManager::Operation operation;
     QByteArray body;
@@ -15,7 +14,6 @@ public:
 };
 
 class Http {
-
 public:
     static Http &instance();
     static const QMap<QByteArray, QByteArray> &getDefaultRequestHeaders();
@@ -30,29 +28,27 @@ public:
     void setReadTimeout(int timeout);
     int getReadTimeout() { return readTimeout; }
 
-    QNetworkReply* networkReply(const HttpRequest &req);
-    virtual QObject* request(const HttpRequest &req);
-    QObject* request(const QUrl &url,
-                     QNetworkAccessManager::Operation operation = QNetworkAccessManager::GetOperation,
-                     const QByteArray &body = QByteArray(),
-                     uint offset = 0);
-    QObject* get(const QUrl &url);
-    QObject* head(const QUrl &url);
-    QObject* post(const QUrl &url, const QMap<QString, QString>& params);
+    QNetworkReply *networkReply(const HttpRequest &req);
+    virtual QObject *request(const HttpRequest &req);
+    QObject *request(const QUrl &url,
+            QNetworkAccessManager::Operation operation = QNetworkAccessManager::GetOperation,
+            const QByteArray &body = QByteArray(),
+            uint offset = 0);
+    QObject *get(const QUrl &url);
+    QObject *head(const QUrl &url);
+    QObject *post(const QUrl &url, const QMap<QString, QString> &params);
     QObject *post(const QUrl &url, const QByteArray &body, const QByteArray &contentType);
 
 private:
     QMap<QByteArray, QByteArray> requestHeaders;
     int readTimeout;
-
 };
 
 class HttpReply : public QObject {
-
     Q_OBJECT
 
 public:
-    HttpReply(QObject *parent = 0) : QObject(parent) { }
+    HttpReply(QObject *parent = 0) : QObject(parent) {}
     virtual QUrl url() const = 0;
     virtual int statusCode() const = 0;
     int isSuccessful() const { return statusCode() >= 200 && statusCode() < 300; }
@@ -74,7 +70,6 @@ signals:
 };
 
 class NetworkHttpReply : public HttpReply {
-
     Q_OBJECT
 
 public:
@@ -104,7 +99,6 @@ private:
     QTimer *readTimeoutTimer;
     int retryCount;
     QByteArray bytes;
-
 };
 
 #endif // HTTP_H
