@@ -1,8 +1,8 @@
 #include "localcache.h"
 
 LocalCache *LocalCache::instance(const QString &name) {
-    static QHash<QString, LocalCache *> instances;
-    QHash<QString, LocalCache *>::const_iterator i = instances.constFind(name);
+    static QMap<QString, LocalCache *> instances;
+    QMap<QString, LocalCache *>::const_iterator i = instances.constFind(name);
     if (i != instances.constEnd()) return i.value();
     LocalCache *instance = new LocalCache(name);
     instances.insert(name, instance);
