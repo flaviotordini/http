@@ -133,7 +133,7 @@ qint64 LocalCache::expire() {
 
     int removedFiles = 0;
     qint64 goal = (maxSize * 9) / 10;
-    QMultiMap<QDateTime, QString>::const_iterator i = cacheItems.constBegin();
+    auto i = cacheItems.constBegin();
     while (i != cacheItems.constEnd()) {
         if (totalSize < goal) break;
         QString name = i.value();
