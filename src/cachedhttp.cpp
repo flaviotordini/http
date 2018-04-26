@@ -29,8 +29,8 @@ void CachedHttpReply::emitSignals() {
     deleteLater();
 }
 
-WrappedHttpReply::WrappedHttpReply(LocalCache *cache, const QByteArray &key, QObject *httpReply)
-    : QObject(httpReply), cache(cache), key(key), httpReply(httpReply) {
+WrappedHttpReply::WrappedHttpReply(LocalCache *cache, const QByteArray &key, HttpReply *httpReply)
+    : HttpReply(httpReply), cache(cache), key(key), httpReply(httpReply) {
     connect(httpReply, SIGNAL(data(QByteArray)), SIGNAL(data(QByteArray)));
     connect(httpReply, SIGNAL(error(QString)), SIGNAL(error(QString)));
     connect(httpReply, SIGNAL(finished(HttpReply)), SLOT(originFinished(HttpReply)));
@@ -52,7 +52,7 @@ void CachedHttp::setMaxSize(uint maxSize) {
     cache->setMaxSize(maxSize);
 }
 
-QObject *CachedHttp::request(const HttpRequest &req) {
+HttpReply *CachedHttp::request(const HttpRequest &req) {
     bool cacheable = req.operation == QNetworkAccessManager::GetOperation ||
                      (cachePostRequests && req.operation == QNetworkAccessManager::PostOperation);
     if (!cacheable) {

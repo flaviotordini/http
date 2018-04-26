@@ -1,17 +1,10 @@
 #include "throttledhttp.h"
 
-namespace {
-
-QElapsedTimer initElapsedTimer() {
-    QElapsedTimer timer;
-    timer.start();
-    return timer;
-}
+ThrottledHttp::ThrottledHttp(Http &http) : http(http) {
+    elapsedTimer.start();
 }
 
-ThrottledHttp::ThrottledHttp(Http &http) : http(http), elapsedTimer(initElapsedTimer()) {}
-
-QObject *ThrottledHttp::request(const HttpRequest &req) {
+HttpReply *ThrottledHttp::request(const HttpRequest &req) {
     return new ThrottledHttpReply(http, req, milliseconds, elapsedTimer);
 }
 

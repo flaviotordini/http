@@ -11,7 +11,7 @@ public:
     void setMaxSeconds(uint seconds);
     void setMaxSize(uint maxSize);
     void setCachePostRequests(bool value) { cachePostRequests = value; }
-    QObject *request(const HttpRequest &req);
+    HttpReply *request(const HttpRequest &req);
 
 private:
     Http &http;
@@ -33,18 +33,17 @@ private slots:
 
 private:
     const QByteArray bytes;
+    const HttpRequest req;
 };
 
-class WrappedHttpReply : public QObject {
+class WrappedHttpReply : public HttpReply {
     Q_OBJECT
 
 public:
-    WrappedHttpReply(LocalCache *cache, const QByteArray &key, QObject *httpReply);
-
-signals:
-    void data(const QByteArray &bytes);
-    void error(const QString &message);
-    void finished(const HttpReply &reply);
+    WrappedHttpReply(LocalCache *cache, const QByteArray &key, HttpReply *httpReply);
+    QUrl url() const { return httpReply->url(); }
+    int statusCode() const { return httpReply->statusCode(); }
+    QByteArray body() const { return httpReply->body(); }
 
 private slots:
     void originFinished(const HttpReply &reply);
@@ -52,7 +51,7 @@ private slots:
 private:
     LocalCache *cache;
     QByteArray key;
-    QObject *httpReply;
+    HttpReply *httpReply;
 };
 
 #endif // CACHEDHTTP_H

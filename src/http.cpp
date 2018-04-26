@@ -93,11 +93,11 @@ QNetworkReply *Http::networkReply(const HttpRequest &req) {
     return networkReply;
 }
 
-QObject *Http::request(const HttpRequest &req) {
+HttpReply *Http::request(const HttpRequest &req) {
     return new NetworkHttpReply(req, *this);
 }
 
-QObject *Http::request(const QUrl &url,
+HttpReply *Http::request(const QUrl &url,
                        QNetworkAccessManager::Operation operation,
                        const QByteArray &body,
                        uint offset) {
@@ -109,15 +109,15 @@ QObject *Http::request(const QUrl &url,
     return request(req);
 }
 
-QObject *Http::get(const QUrl &url) {
+HttpReply *Http::get(const QUrl &url) {
     return request(url, QNetworkAccessManager::GetOperation);
 }
 
-QObject *Http::head(const QUrl &url) {
+HttpReply *Http::head(const QUrl &url) {
     return request(url, QNetworkAccessManager::HeadOperation);
 }
 
-QObject *Http::post(const QUrl &url, const QMap<QString, QString> &params) {
+HttpReply *Http::post(const QUrl &url, const QMap<QString, QString> &params) {
     QByteArray body;
     QMapIterator<QString, QString> i(params);
     while (i.hasNext()) {
@@ -133,7 +133,7 @@ QObject *Http::post(const QUrl &url, const QMap<QString, QString> &params) {
     return request(req);
 }
 
-QObject *Http::post(const QUrl &url, const QByteArray &body, const QByteArray &contentType) {
+HttpReply *Http::post(const QUrl &url, const QByteArray &body, const QByteArray &contentType) {
     HttpRequest req;
     req.url = url;
     req.operation = QNetworkAccessManager::PostOperation;

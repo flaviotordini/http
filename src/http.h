@@ -13,37 +13,6 @@ public:
     QMap<QByteArray, QByteArray> headers;
 };
 
-class Http {
-public:
-    static Http &instance();
-    static const QMap<QByteArray, QByteArray> &getDefaultRequestHeaders();
-    static void setDefaultReadTimeout(int timeout);
-
-    Http();
-
-    void setRequestHeaders(const QMap<QByteArray, QByteArray> &headers);
-    QMap<QByteArray, QByteArray> &getRequestHeaders();
-    void addRequestHeader(const QByteArray &name, const QByteArray &value);
-
-    void setReadTimeout(int timeout);
-    int getReadTimeout() { return readTimeout; }
-
-    QNetworkReply *networkReply(const HttpRequest &req);
-    virtual QObject *request(const HttpRequest &req);
-    QObject *request(const QUrl &url,
-            QNetworkAccessManager::Operation operation = QNetworkAccessManager::GetOperation,
-            const QByteArray &body = QByteArray(),
-            uint offset = 0);
-    QObject *get(const QUrl &url);
-    QObject *head(const QUrl &url);
-    QObject *post(const QUrl &url, const QMap<QString, QString> &params);
-    QObject *post(const QUrl &url, const QByteArray &body, const QByteArray &contentType);
-
-private:
-    QMap<QByteArray, QByteArray> requestHeaders;
-    int readTimeout;
-};
-
 class HttpReply : public QObject {
     Q_OBJECT
 
@@ -67,6 +36,37 @@ signals:
     void data(const QByteArray &bytes);
     void error(const QString &message);
     void finished(const HttpReply &reply);
+};
+
+class Http {
+public:
+    static Http &instance();
+    static const QMap<QByteArray, QByteArray> &getDefaultRequestHeaders();
+    static void setDefaultReadTimeout(int timeout);
+
+    Http();
+
+    void setRequestHeaders(const QMap<QByteArray, QByteArray> &headers);
+    QMap<QByteArray, QByteArray> &getRequestHeaders();
+    void addRequestHeader(const QByteArray &name, const QByteArray &value);
+
+    void setReadTimeout(int timeout);
+    int getReadTimeout() { return readTimeout; }
+
+    QNetworkReply *networkReply(const HttpRequest &req);
+    virtual HttpReply *request(const HttpRequest &req);
+    HttpReply *request(const QUrl &url,
+            QNetworkAccessManager::Operation operation = QNetworkAccessManager::GetOperation,
+            const QByteArray &body = QByteArray(),
+            uint offset = 0);
+    HttpReply *get(const QUrl &url);
+    HttpReply *head(const QUrl &url);
+    HttpReply *post(const QUrl &url, const QMap<QString, QString> &params);
+    HttpReply *post(const QUrl &url, const QByteArray &body, const QByteArray &contentType);
+
+private:
+    QMap<QByteArray, QByteArray> requestHeaders;
+    int readTimeout;
 };
 
 class NetworkHttpReply : public HttpReply {

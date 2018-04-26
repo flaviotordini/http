@@ -9,7 +9,7 @@ class ThrottledHttp : public Http {
 public:
     ThrottledHttp(Http &http = Http::instance());
     void setMilliseconds(int milliseconds) { this->milliseconds = milliseconds; }
-    QObject *request(const HttpRequest &req);
+    HttpReply *request(const HttpRequest &req);
 
 private:
     Http &http;
