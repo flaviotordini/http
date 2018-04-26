@@ -33,7 +33,6 @@ private slots:
 
 private:
     const QByteArray bytes;
-    const HttpRequest &req;
 };
 
 class WrappedHttpReply : public QObject {
