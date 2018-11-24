@@ -17,7 +17,7 @@ QNetworkAccessManager *networkAccessManager() {
     return nam;
 }
 
-static int defaultReadTimeout = 10000;
+int defaultReadTimeout = 10000;
 } // namespace
 
 Http::Http() : requestHeaders(getDefaultRequestHeaders()), readTimeout(defaultReadTimeout) {}
