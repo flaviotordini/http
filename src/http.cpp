@@ -18,7 +18,7 @@ QNetworkAccessManager *networkAccessManager() {
 }
 
 static int defaultReadTimeout = 10000;
-}
+} // namespace
 
 Http::Http() : requestHeaders(getDefaultRequestHeaders()), readTimeout(defaultReadTimeout) {}
 
@@ -98,9 +98,9 @@ HttpReply *Http::request(const HttpRequest &req) {
 }
 
 HttpReply *Http::request(const QUrl &url,
-                       QNetworkAccessManager::Operation operation,
-                       const QByteArray &body,
-                       uint offset) {
+                         QNetworkAccessManager::Operation operation,
+                         const QByteArray &body,
+                         uint offset) {
     HttpRequest req;
     req.url = url;
     req.operation = operation;

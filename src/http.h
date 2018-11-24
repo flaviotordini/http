@@ -55,7 +55,8 @@ public:
 
     QNetworkReply *networkReply(const HttpRequest &req);
     virtual HttpReply *request(const HttpRequest &req);
-    HttpReply *request(const QUrl &url,
+    HttpReply *
+    request(const QUrl &url,
             QNetworkAccessManager::Operation operation = QNetworkAccessManager::GetOperation,
             const QByteArray &body = QByteArray(),
             uint offset = 0);

@@ -12,7 +12,7 @@ QByteArray requestHash(const HttpRequest &req) {
     }
     return LocalCache::hash(s);
 }
-}
+} // namespace
 
 CachedHttpReply::CachedHttpReply(const QByteArray &body, const HttpRequest &req)
     : bytes(body), req(req) {
