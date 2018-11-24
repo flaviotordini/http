@@ -1,6 +1,6 @@
 #include "throttledhttp.h"
 
-ThrottledHttp::ThrottledHttp(Http &http) : http(http) {
+ThrottledHttp::ThrottledHttp(Http &http) : http(http), milliseconds(1000) {
     elapsedTimer.start();
 }
 
