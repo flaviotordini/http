@@ -43,9 +43,9 @@ QByteArray LocalCache::hash(const QByteArray &s) {
 
 bool LocalCache::isCached(const QString &path) {
     bool cached = (QFile::exists(path) &&
-                   (maxSeconds == 0 ||
-                    QDateTime::currentDateTime().toTime_t() - QFileInfo(path).created().toTime_t() <
-                            maxSeconds));
+                   (maxSeconds == 0 || QDateTime::currentDateTimeUtc().toTime_t() -
+                                                       QFileInfo(path).created().toTime_t() <
+                                               maxSeconds));
 #ifndef QT_NO_DEBUG_OUTPUT
     if (!cached) misses++;
 #endif
