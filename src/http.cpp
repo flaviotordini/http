@@ -72,7 +72,7 @@ QNetworkReply *Http::networkReply(const HttpRequest &req) {
 
     QNetworkAccessManager *manager = networkAccessManager();
 
-    QNetworkReply *networkReply = 0;
+    QNetworkReply *networkReply = nullptr;
     switch (req.operation) {
     case QNetworkAccessManager::GetOperation:
         networkReply = manager->get(request);

@@ -12,7 +12,7 @@ ThrottledHttpReply::ThrottledHttpReply(Http &http,
                                        const HttpRequest &req,
                                        int milliseconds,
                                        QElapsedTimer &elapsedTimer)
-    : http(http), req(req), milliseconds(milliseconds), elapsedTimer(elapsedTimer), timer(0) {
+    : http(http), req(req), milliseconds(milliseconds), elapsedTimer(elapsedTimer), timer(nullptr) {
     checkElapsed();
 }
 

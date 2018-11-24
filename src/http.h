@@ -17,7 +17,7 @@ class HttpReply : public QObject {
     Q_OBJECT
 
 public:
-    HttpReply(QObject *parent = 0) : QObject(parent) {}
+    HttpReply(QObject *parent = nullptr) : QObject(parent) {}
     virtual QUrl url() const = 0;
     virtual int statusCode() const = 0;
     int isSuccessful() const { return statusCode() >= 200 && statusCode() < 300; }
