@@ -39,8 +39,8 @@ void Http::setReadTimeout(int timeout) {
 }
 
 Http &Http::instance() {
-    static Http *i = new Http();
-    return *i;
+    static Http i;
+    return i;
 }
 
 const QMap<QByteArray, QByteArray> &Http::getDefaultRequestHeaders() {
