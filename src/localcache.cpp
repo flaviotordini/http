@@ -77,7 +77,7 @@ void LocalCache::insert(const QByteArray &key, const QByteArray &value) {
         if (insertQueue.isEmpty()) return;
         for (const auto &item : insertQueue) {
             const QString path = cachePath(item.key);
-            const QString parentDir = path.left(path.lastIndexOf('/'));
+            const QString parentDir = path.left(path.lastIndexOf(QLatin1Char('/')));
             if (!QFile::exists(parentDir)) {
                 QDir().mkpath(parentDir);
             }

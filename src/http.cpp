@@ -68,7 +68,7 @@ QNetworkReply *Http::networkReply(const HttpRequest &req) {
         request.setRawHeader(it.key(), it.value());
 
     if (req.offset > 0)
-        request.setRawHeader("Range", QString("bytes=%1-").arg(req.offset).toUtf8());
+        request.setRawHeader("Range", QStringLiteral("bytes=%1-").arg(req.offset).toUtf8());
 
     QNetworkAccessManager *manager = networkAccessManager();
 
