@@ -71,32 +71,25 @@ QByteArray LocalCache::value(const QByteArray &key) {
 }
 
 void LocalCache::insert(const QByteArray &key, const QByteArray &value) {
-    const QueueItem item = {key, value};
-    insertQueue.append(item);
-    QTimer::singleShot(0, [this]() {
-        if (insertQueue.isEmpty()) return;
-        for (const auto &item : insertQueue) {
-            const QString path = cachePath(item.key);
-            const QString parentDir = path.left(path.lastIndexOf(QLatin1Char('/')));
-            if (!QFile::exists(parentDir)) {
-                QDir().mkpath(parentDir);
-            }
-            QFile file(path);
-            if (!file.open(QIODevice::WriteOnly)) {
-                qWarning() << "Cannot create" << path;
-                continue;
-            }
-            file.write(item.value);
-            file.close();
-            if (size > 0) size += item.value.size();
-        }
-        insertQueue.clear();
+    qDebug() << "Inserting" << key;
+    const QString path = cachePath(key);
+    const QString parentDir = path.left(path.lastIndexOf(QLatin1Char('/')));
+    if (!QFile::exists(parentDir)) {
+        QDir().mkpath(parentDir);
+    }
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "Cannot create" << path;
+        return;
+    }
+    file.write(value);
+    file.close();
+    if (size > 0) size += value.size();
 
-        // expire cache every n inserts
-        if (maxSize > 0 && ++insertCount % 100 == 0) {
-            if (size == 0 || size > maxSize) size = expire();
-        }
-    });
+    // expire cache every n inserts
+    if (maxSize > 0 && ++insertCount % 100 == 0) {
+        if (size == 0 || size > maxSize) size = expire();
+    }
 }
 
 bool LocalCache::clear() {
