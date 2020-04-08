@@ -103,7 +103,7 @@ bool LocalCache::clear() {
 }
 
 QString LocalCache::cachePath(const QByteArray &key) const {
-    return directory + QLatin1String(key.constData());
+    return directory + QLatin1String(key);
 }
 
 qint64 LocalCache::expire() {
