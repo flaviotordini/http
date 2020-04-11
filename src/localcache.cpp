@@ -115,7 +115,7 @@ qint64 LocalCache::expire() {
     while (it.hasNext()) {
         QString path = it.next();
         QFileInfo info = it.fileInfo();
-        cacheItems.insert(info.created(), path);
+        cacheItems.insert(info.birthTime(), path);
         totalSize += info.size();
         qApp->processEvents();
     }
