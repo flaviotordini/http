@@ -10,8 +10,7 @@ LocalCache *LocalCache::instance(const char *name) {
 }
 
 LocalCache::LocalCache(const QByteArray &name)
-    : name(name), maxSeconds(86400 * 30), maxSize(1024 * 1024 * 100), size(0), expiring(false),
-      insertCount(0) {
+    : name(name), maxSeconds(86400 * 30), maxSize(1024 * 1024 * 100), size(0), insertCount(0) {
     directory = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1Char('/') +
                 QLatin1String(name) + QLatin1Char('/');
 #ifndef QT_NO_DEBUG_OUTPUT
@@ -106,8 +105,7 @@ QString LocalCache::cachePath(const QByteArray &key) const {
 }
 
 qint64 LocalCache::expire() {
-    if (expiring) return size;
-    expiring = true;
+    QMutexLocker locker(&mutex);
 
     QDir::Filters filters = QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot;
     QDirIterator it(directory, filters, QDirIterator::Subdirectories);
@@ -143,8 +141,6 @@ qint64 LocalCache::expire() {
                  << "New Size:" << totalSize;
     }
 #endif
-
-    expiring = false;
 
     return totalSize;
 }

@@ -35,7 +35,7 @@ private:
     uint maxSeconds;
     qint64 maxSize;
     qint64 size;
-    bool expiring;
+    QMutex mutex;
     uint insertCount;
 
 #ifndef QT_NO_DEBUG_OUTPUT
