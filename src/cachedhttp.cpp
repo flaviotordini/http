@@ -37,6 +37,7 @@ WrappedHttpReply::WrappedHttpReply(LocalCache *cache, const QByteArray &key, Htt
 }
 
 void WrappedHttpReply::originFinished(const HttpReply &reply) {
+    qDebug() << reply.statusCode() << reply.url();
     if (reply.isSuccessful()) cache->insert(key, reply.body());
     emit finished(reply);
 }
@@ -62,9 +63,9 @@ HttpReply *CachedHttp::request(const HttpRequest &req) {
     const QByteArray key = requestHash(req);
     const QByteArray value = cache->value(key);
     if (!value.isNull()) {
-        qDebug() << "CachedHttp HIT" << req.url;
+        qDebug() << "HIT" << key << req.url;
         return new CachedHttpReply(value, req);
     }
-    qDebug() << "CachedHttp MISS" << req.url.toString();
+    qDebug() << "MISS" << key << req.url;
     return new WrappedHttpReply(cache, key, http.request(req));
 }

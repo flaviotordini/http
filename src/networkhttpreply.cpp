@@ -76,7 +76,7 @@ void NetworkHttpReply::replyFinished() {
 
 #ifndef QT_NO_DEBUG_OUTPUT
         if (!networkReply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool())
-            qDebug() << networkReply->url().toString() << statusCode();
+            qDebug() << statusCode() << networkReply->url().toString();
         else
             qDebug() << "CACHE" << networkReply->url().toString();
 #endif
@@ -91,7 +91,7 @@ void NetworkHttpReply::replyError(QNetworkReply::NetworkError code) {
     if (retryCount <= 3 && status >= 500 && status < 600 &&
         (networkReply->operation() == QNetworkAccessManager::GetOperation ||
          networkReply->operation() == QNetworkAccessManager::HeadOperation)) {
-        qDebug() << "Retrying" << req.operation << req.url;
+        qDebug() << "Retrying" << status << QVariant(req.operation).toString() << req.url;
         networkReply->disconnect();
         networkReply->deleteLater();
         QNetworkReply *retryReply = http.networkReply(req);
