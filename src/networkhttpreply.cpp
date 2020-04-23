@@ -88,7 +88,7 @@ void NetworkHttpReply::replyFinished() {
 void NetworkHttpReply::replyError(QNetworkReply::NetworkError code) {
     Q_UNUSED(code);
     const int status = statusCode();
-    if (retryCount <= 3 && status >= 500 && status < 600 &&
+    if (retryCount <= http.getMaxRetries() && status >= 500 && status < 600 &&
         (networkReply->operation() == QNetworkAccessManager::GetOperation ||
          networkReply->operation() == QNetworkAccessManager::HeadOperation)) {
         qDebug() << "Retrying" << status << QVariant(req.operation).toString() << req.url;
@@ -116,18 +116,24 @@ void NetworkHttpReply::downloadProgress(qint64 bytesReceived, qint64 /* bytesTot
 }
 
 void NetworkHttpReply::readTimeout() {
+    qDebug() << "Timeout" << req.url;
+
     if (!networkReply) return;
+
+    bool shouldRetry = (networkReply->operation() == QNetworkAccessManager::GetOperation ||
+                        networkReply->operation() == QNetworkAccessManager::HeadOperation) &&
+                       retryCount < http.getMaxRetries();
+
     networkReply->disconnect();
     networkReply->abort();
     networkReply->deleteLater();
 
-    if (retryCount > 3) {
+    if (!shouldRetry) {
         emitError();
         emit finished(*this);
         return;
     }
 
-    qDebug() << "Timeout" << req.url;
     retryCount++;
     QNetworkReply *retryReply = http.networkReply(req);
     setParent(retryReply);

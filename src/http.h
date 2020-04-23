@@ -21,6 +21,9 @@ public:
     void setReadTimeout(int timeout);
     int getReadTimeout() { return readTimeout; }
 
+    int getMaxRetries() const;
+    void setMaxRetries(int value);
+
     QNetworkReply *networkReply(const HttpRequest &req);
     virtual HttpReply *request(const HttpRequest &req);
     HttpReply *
@@ -36,6 +39,7 @@ public:
 private:
     QMap<QByteArray, QByteArray> requestHeaders;
     int readTimeout;
+    int maxRetries;
 };
 
 #endif // HTTP_H

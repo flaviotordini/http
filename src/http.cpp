@@ -20,9 +20,12 @@ QNetworkAccessManager *networkAccessManager() {
 }
 
 int defaultReadTimeout = 10000;
+int defaultMaxRetries = 3;
 } // namespace
 
-Http::Http() : requestHeaders(getDefaultRequestHeaders()), readTimeout(defaultReadTimeout) {}
+Http::Http()
+    : requestHeaders(getDefaultRequestHeaders()), readTimeout(defaultReadTimeout),
+      maxRetries(defaultMaxRetries) {}
 
 void Http::setRequestHeaders(const QMap<QByteArray, QByteArray> &headers) {
     requestHeaders = headers;
@@ -145,4 +148,14 @@ HttpReply *Http::post(const QUrl &url, const QByteArray &body, const QByteArray 
     if (cType.isEmpty()) cType = "application/x-www-form-urlencoded";
     req.headers.insert("Content-Type", cType);
     return request(req);
+}
+
+int Http::getMaxRetries() const
+{
+    return maxRetries;
+}
+
+void Http::setMaxRetries(int value)
+{
+    maxRetries = value;
 }
