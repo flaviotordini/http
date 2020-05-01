@@ -4,18 +4,8 @@
 
 namespace {
 
-QNetworkAccessManager *createNetworkAccessManager() {
-    QNetworkAccessManager *nam = new QNetworkAccessManager();
-    return nam;
-}
-
 QNetworkAccessManager *networkAccessManager() {
-    static QMap<QThread *, QNetworkAccessManager *> nams;
-    QThread *t = QThread::currentThread();
-    QMap<QThread *, QNetworkAccessManager *>::const_iterator i = nams.constFind(t);
-    if (i != nams.constEnd()) return i.value();
-    QNetworkAccessManager *nam = createNetworkAccessManager();
-    nams.insert(t, nam);
+    static thread_local QNetworkAccessManager *nam = new QNetworkAccessManager();
     return nam;
 }
 
