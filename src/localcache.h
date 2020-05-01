@@ -25,7 +25,7 @@ private:
     LocalCache(const QByteArray &name);
     QString cachePath(const QByteArray &key) const;
     bool isCached(const QString &path);
-    qint64 expire();
+    void expire();
 #ifndef QT_NO_DEBUG_OUTPUT
     void debugStats();
 #endif
