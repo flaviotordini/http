@@ -19,7 +19,7 @@ public:
 
     QByteArray value(const QByteArray &key);
     void insert(const QByteArray &key, const QByteArray &value);
-    bool clear();
+    void clear();
 
 private:
     LocalCache(const QByteArray &name);

@@ -90,14 +90,16 @@ void LocalCache::insert(const QByteArray &key, const QByteArray &value) {
     }
 }
 
-bool LocalCache::clear() {
+void LocalCache::clear() {
 #ifndef QT_NO_DEBUG_OUTPUT
     hits = 0;
     misses = 0;
 #endif
     size = 0;
     insertCount = 0;
-    return QDir(directory).removeRecursively();
+    mutex.lock();
+    QDir(directory).removeRecursively();
+    mutex.unlock();
 }
 
 QString LocalCache::cachePath(const QByteArray &key) const {
