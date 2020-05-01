@@ -57,7 +57,9 @@ void NetworkHttpReply::replyFinished() {
     QUrl redirection = networkReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (redirection.isValid()) {
         HttpRequest redirectReq;
-        redirectReq.url = redirection.resolved(networkReply->url());
+        if (redirection.isRelative()) redirection = networkReply->url().resolved(redirection);
+        redirectReq.url = redirection;
+        qDebug() << "Redirected to" << redirectReq.url;
         redirectReq.operation = req.operation;
         redirectReq.body = req.body;
         redirectReq.offset = req.offset;
