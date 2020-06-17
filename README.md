@@ -1,6 +1,6 @@
 # A wrapper for the Qt Network Access API
 
-This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it in my Qt apps at http://flavio.tordini.org . It allows me to add missing functionality as needed, e.g.:
+This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it in my Qt apps at https://flavio.tordini.org . It allows me to add missing functionality as needed, e.g.:
 
 - Throttling (as required by many web APIs nowadays)
 - Read timeouts (don't let your requests get stuck forever)
@@ -14,16 +14,13 @@ It has a simpler, higher-level API that I find easier to work with. The design e
 A basic example:
 
 ```
-QObject *reply = Http::instance().get("https://google.com/");
-connect(reply, SIGNAL(data(QByteArray)), SLOT(onSuccess(QByteArray)));
-connect(reply, SIGNAL(error(QString)), SLOT(onError(QString)));
-
-void MyClass::onSuccess(const QByteArray &bytes) {
-	qDebug() << "Feel the bytes!" << bytes;
-}
-
-void MyClass::onError(const QString &message) {
-	qDebug() << "Something's wrong here" << message;
+auto reply = Http::instance().get("https://google.com/");
+connect(reply, &HttpReply::finished, this, [](auto reply) {
+    if (reply.isSuccessful()) {
+        qDebug() << "Feel the bytes!" << reply.body();
+    } else {
+        qDebug() << "Something's wrong here" << reply.statusCode() << reply.reashPhrase();
+    }
 }
 ```
 
