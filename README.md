@@ -19,7 +19,7 @@ connect(reply, &HttpReply::finished, this, [](auto reply) {
     if (reply.isSuccessful()) {
         qDebug() << "Feel the bytes!" << reply.body();
     } else {
-        qDebug() << "Something's wrong here" << reply.statusCode() << reply.reashPhrase();
+        qDebug() << "Something's wrong here" << reply.statusCode() << reply.reasonPhrase();
     }
 }
 ```
