@@ -11,6 +11,8 @@ This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it i
 
 It has a simpler, higher-level API that I find easier to work with. The design emerged naturally in years of practical use.
 
+## Examples
+
 A basic example:
 
 ```
@@ -52,6 +54,29 @@ req.url = "https://flavio.tordini.org/";
 QNetworkReply *reply = Http::instance().networkReply(req);
 // Use QNetworkReply as needed...
 ```
+
+## Integration
+
+You can use this library as a git submodule. For example, add it to your project inside a lib subdirectory:
+
+```
+git submodule add -b master https://github.com/flaviotordini/http lib/http
+```
+
+Then you can update your git submodules like this:
+
+```
+git submodule update --init --recursive --remote
+```
+
+To integrate the library in your qmake based project just add this to your .pro file:
+
+```
+include(lib/http/http.pri)
+```
+
+
+## License
 
 You can use this library under the MIT license and at your own risk. If you do, you're welcome contributing your changes and fixes.
 
