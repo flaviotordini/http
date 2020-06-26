@@ -14,7 +14,7 @@ This library uses the [Proxy design pattern](https://en.wikipedia.org/wiki/Proxy
 - [CachedHttp](https://github.com/flaviotordini/http/blob/master/src/cachedhttp.h), a simple disk-based cache
 - [ThrottledHttp](https://github.com/flaviotordini/http/blob/master/src/throttledhttp.h), implements request throttling (aka limiting)
 
-The constructor of these classes take another Http instance for which they will act as a proxy. (See examples below)
+The constructor of these classes take another Http instance for which they will act as a proxy. (See examples below). Following this design you can create your own Http subclass, e.g. a different caching mechanism, a event dispatcher, custom request logging, etc.
 
 ## Integration
 
