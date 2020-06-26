@@ -6,6 +6,7 @@ This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it i
 - Automatic retries
 - User agent and request header defaults
 - Partial requests
+- Easier POST requests
 - Read timeouts (don't let your requests get stuck forever). (now supported by Qt >= 5.15)
 - Redirection support (now supported by Qt >= 5.6)
 
