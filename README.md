@@ -1,6 +1,6 @@
 # A wrapper for the Qt Network Access API
 
-This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it in my Qt apps at https://flavio.tordini.org . It has a simpler, higher-level API and some functionality not found in Qt:
+This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it in my apps at https://flavio.tordini.org . It has a simpler, higher-level API and some functionality not found in Qt:
 
 - Throttling (as required by many web APIs nowadays)
 - Automatic retries
