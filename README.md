@@ -3,10 +3,10 @@
 This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it in my Qt apps at https://flavio.tordini.org . It has a simpler, higher-level API and some functionality not found in Qt:
 
 - Throttling (as required by many web APIs nowadays)
-- Read timeouts (don't let your requests get stuck forever)
 - Automatic retries
 - User agent and request header defaults
 - Partial requests
+- Read timeouts (don't let your requests get stuck forever). (now supported by Qt >= 5.15)
 - Redirection support (now supported by Qt >= 5.6)
 
 This library uses the [Proxy design pattern](https://en.wikipedia.org/wiki/Proxy_pattern) to modularize features and make it easy to add them and use them as needed. The main class is [Http](https://github.com/flaviotordini/http/blob/master/src/http.h), which implements the base features of a HTTP client. More specialized classes are:
