@@ -12,7 +12,7 @@ This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it i
 
 ## Design
 
-This library uses the [Proxy design pattern](https://en.wikipedia.org/wiki/Proxy_pattern) to modularize features and make it easy to add them and use them as needed. The main class is [Http](https://github.com/flaviotordini/http/blob/master/src/http.h), which implements the base features of a HTTP client. More specialized classes are:
+This library uses the [Decorator design pattern](https://en.wikipedia.org/wiki/Decorator_pattern) to modularize features and make it easy to add them and use them as needed. The main class is [Http](https://github.com/flaviotordini/http/blob/master/src/http.h), which implements the base features of a HTTP client. More specialized classes are:
 
 - [CachedHttp](https://github.com/flaviotordini/http/blob/master/src/cachedhttp.h), a simple disk-based cache
 - [ThrottledHttp](https://github.com/flaviotordini/http/blob/master/src/throttledhttp.h), implements request throttling (aka limiting)
