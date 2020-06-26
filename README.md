@@ -10,6 +10,8 @@ This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it i
 - Read timeouts (don't let your requests get stuck forever). (now supported by Qt >= 5.15)
 - Redirection support (now supported by Qt >= 5.6)
 
+## Design
+
 This library uses the [Proxy design pattern](https://en.wikipedia.org/wiki/Proxy_pattern) to modularize features and make it easy to add them and use them as needed. The main class is [Http](https://github.com/flaviotordini/http/blob/master/src/http.h), which implements the base features of a HTTP client. More specialized classes are:
 
 - [CachedHttp](https://github.com/flaviotordini/http/blob/master/src/cachedhttp.h), a simple disk-based cache
