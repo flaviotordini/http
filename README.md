@@ -9,6 +9,13 @@ This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it i
 - Partial requests
 - Redirection support (now supported by Qt >= 5.6)
 
+This library uses the [Proxy design pattern](https://en.wikipedia.org/wiki/Proxy_pattern) to modularize features and make it easy to add them and use them as needed. The main class is [Http](https://github.com/flaviotordini/http/blob/master/src/http.h), which implements the base features of a HTTP client. More specialized classes are:
+
+- [CachedHttp](https://github.com/flaviotordini/http/blob/master/src/cachedhttp.h), a simple disk-based cache
+- [ThrottledHttp](https://github.com/flaviotordini/http/blob/master/src/throttledhttp.h), implements request throttling (aka limiting)
+
+The constructor of these classes take another Http instance for which they will act as a proxy. (See examples below)
+
 ## Integration
 
 You can use this library as a git submodule. For example, add it to your project inside a lib subdirectory:
@@ -31,7 +38,7 @@ include(lib/http/http.pri)
 
 ## Examples
 
-A basic example:
+A basic C++14 example:
 
 ```
 #include "http.h"
@@ -43,10 +50,10 @@ connect(reply, &HttpReply::finished, this, [](auto reply) {
     } else {
         qDebug() << "Something's wrong here" << reply.statusCode() << reply.reasonPhrase();
     }
-}
+});
 ```
 
-This is a real-world example of building a Http object suitable to a web service. It throttles requests, uses a custom user agent and caches results:
+This is a real-world example of building a Http object with more complex features. It throttles requests, uses a custom user agent and caches results:
 
 ```
 #include "http.h"
