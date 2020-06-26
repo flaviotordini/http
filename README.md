@@ -47,7 +47,7 @@ A basic C++14 example:
 #include "http.h"
 
 auto reply = Http::instance().get("https://google.com/");
-connect(reply, &HttpReply::finished, this, [](auto reply) {
+connect(reply, &HttpReply::finished, this, [](auto &reply) {
     if (reply.isSuccessful()) {
         qDebug() << "Feel the bytes!" << reply.body();
     } else {
