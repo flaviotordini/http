@@ -19,6 +19,31 @@ This library uses the [Decorator design pattern](https://en.wikipedia.org/wiki/D
 
 The constructor of these classes takes another Http instance for which they will act as a proxy. (See examples below). Following this design you can create your own Http subclass. For example, a different caching mechanism, an event dispatcher, custom request logging, etc.
 
+
+## Build Instructions
+In order to build this library you can use either `qmake` or `cmake`.
+
+### qmake on Linux
+```
+mkdir build
+cd build
+qmake ..
+make
+sudo make install
+```
+
+
+### cmake on Linux
+```
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+```
+
+
+
 ## Integration
 
 You can use this library as a git submodule. For example, add it to your project inside a lib subdirectory:
@@ -38,6 +63,22 @@ To integrate the library in your qmake based project just add this to your .pro 
 ```
 include(lib/http/http.pri)
 ```
+
+Or if you are using CMake you can integrate the library by adding the following lines to your CMakeLists.txt:
+
+```
+add_subdirectory(lib/http)
+...
+target_link_library(your_super_cool_project <other libraries> http)
+```
+or if you have installed http you can find it via:
+
+```
+find_library(http REQUIRED)
+...
+target_link_library(your_super_cool_project <other libraries> http)
+```
+
 
 ## Examples
 
