@@ -23,26 +23,21 @@ The constructor of these classes takes another Http instance for which they will
 ## Build Instructions
 In order to build this library you can use either `qmake` or `cmake`.
 
-### qmake on Linux
+### qmake
 ```
 mkdir build
 cd build
 qmake ..
 make
-sudo make install
 ```
 
-
-### cmake on Linux
+### CMake
 ```
 mkdir build
 cd build
 cmake ..
 make
-sudo make install
 ```
-
-
 
 ## Integration
 
