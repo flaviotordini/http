@@ -59,7 +59,13 @@ To integrate the library in your qmake based project just add this to your .pro 
 include(lib/http/http.pri)
 ```
 
-Or if you are using CMake you can integrate the library by adding the following lines to your CMakeLists.txt:
+qmake builds all object files in the same directory. In order to avoid filename clashes use:
+
+```
+CONFIG += object_parallel_to_source
+```
+
+If you are using CMake you can integrate the library by adding the following lines to your CMakeLists.txt:
 
 ```
 add_subdirectory(lib/http)
