@@ -35,6 +35,8 @@ public:
     HttpReply *head(const QUrl &url);
     HttpReply *post(const QUrl &url, const QMap<QString, QString> &params);
     HttpReply *post(const QUrl &url, const QByteArray &body, const QByteArray &contentType);
+    HttpReply *put(const QUrl &url, const QByteArray &body, const QByteArray &contentType);
+    HttpReply *deleteResource(const QUrl &url);
 
 private:
     QMap<QByteArray, QByteArray> requestHeaders;

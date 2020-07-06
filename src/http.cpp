@@ -81,6 +81,14 @@ QNetworkReply *Http::networkReply(const HttpRequest &req) {
         networkReply = manager->post(request, req.body);
         break;
 
+    case QNetworkAccessManager::PutOperation:
+        networkReply = manager->put(request, req.body);
+        break;
+
+    case QNetworkAccessManager::DeleteOperation:
+        networkReply = manager->deleteResource(request);
+        break;
+
     default:
         qWarning() << "Unknown operation:" << req.operation;
     }
@@ -140,12 +148,32 @@ HttpReply *Http::post(const QUrl &url, const QByteArray &body, const QByteArray 
     return request(req);
 }
 
-int Http::getMaxRetries() const
-{
+
+HttpReply *Http::put(const QUrl &url, const QByteArray &body, const QByteArray &contentType) {
+	HttpRequest req;
+	req.url = url;
+	req.operation = QNetworkAccessManager::PutOperation;
+	req.body = body;
+	req.headers = requestHeaders;
+	QByteArray cType = contentType;
+	if (cType.isEmpty()) cType = "application/x-www-form-urlencoded";
+	req.headers.insert("Content-Type", cType);
+	return request(req);
+}
+
+
+HttpReply *Http::deleteResource(const QUrl &url) {
+	HttpRequest req;
+	req.url = url;
+	req.operation = QNetworkAccessManager::DeleteOperation;
+	req.headers = requestHeaders;
+	return request(req);
+}
+
+int Http::getMaxRetries() const {
     return maxRetries;
 }
 
-void Http::setMaxRetries(int value)
-{
+void Http::setMaxRetries(int value) {
     maxRetries = value;
 }
