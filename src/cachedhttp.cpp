@@ -1,19 +1,6 @@
 #include "cachedhttp.h"
 #include "localcache.h"
 
-namespace {
-
-QByteArray requestHash(const HttpRequest &req) {
-    const char sep = '|';
-    QByteArray s = req.url.toEncoded() + sep + req.body + sep + QByteArray::number(req.offset);
-    if (req.operation == QNetworkAccessManager::PostOperation) {
-        s.append(sep);
-        s.append("POST");
-    }
-    return LocalCache::hash(s);
-}
-} // namespace
-
 CachedHttpReply::CachedHttpReply(const QByteArray &body, const HttpRequest &req)
     : bytes(body), req(req) {
     QTimer::singleShot(0, this, SLOT(emitSignals()));
@@ -68,4 +55,21 @@ HttpReply *CachedHttp::request(const HttpRequest &req) {
     }
     qDebug() << "MISS" << key << req.url;
     return new WrappedHttpReply(cache, key, http.request(req));
+}
+
+QByteArray CachedHttp::requestHash(const HttpRequest &req) {
+    const char sep = '|';
+
+    QByteArray s;
+    if (ignoreHostname) {
+        s = (req.url.scheme() + sep + req.url.path() + sep + req.url.query()).toUtf8();
+    } else {
+        s = req.url.toEncoded();
+    }
+    s += sep + req.body + sep + QByteArray::number(req.offset);
+    if (req.operation == QNetworkAccessManager::PostOperation) {
+        s.append(sep);
+        s.append("POST");
+    }
+    return LocalCache::hash(s);
 }

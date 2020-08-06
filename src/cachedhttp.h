@@ -11,12 +11,16 @@ public:
     void setMaxSeconds(uint seconds);
     void setMaxSize(uint maxSize);
     void setCachePostRequests(bool value) { cachePostRequests = value; }
+    void setIgnoreHostname(bool value) { ignoreHostname = value; }
     HttpReply *request(const HttpRequest &req);
 
 private:
+    QByteArray requestHash(const HttpRequest &req);
+
     Http &http;
     LocalCache *cache;
     bool cachePostRequests;
+    bool ignoreHostname = false;
 };
 
 class CachedHttpReply : public HttpReply {
