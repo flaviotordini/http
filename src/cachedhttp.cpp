@@ -1,5 +1,6 @@
 #include "cachedhttp.h"
 #include "localcache.h"
+#include <QtNetwork>
 
 CachedHttpReply::CachedHttpReply(const QByteArray &body, const HttpRequest &req)
     : bytes(body), req(req) {
@@ -16,8 +17,11 @@ void CachedHttpReply::emitSignals() {
     deleteLater();
 }
 
-WrappedHttpReply::WrappedHttpReply(LocalCache *cache, const QByteArray &key, HttpReply *httpReply)
-    : HttpReply(httpReply), cache(cache), key(key), httpReply(httpReply) {
+WrappedHttpReply::WrappedHttpReply(CachedHttp &cachedHttp,
+                                   LocalCache *cache,
+                                   const QByteArray &key,
+                                   HttpReply *httpReply)
+    : HttpReply(httpReply), cachedHttp(cachedHttp), cache(cache), key(key), httpReply(httpReply) {
     connect(httpReply, SIGNAL(data(QByteArray)), SIGNAL(data(QByteArray)));
     connect(httpReply, SIGNAL(error(QString)), SIGNAL(error(QString)));
     connect(httpReply, SIGNAL(finished(HttpReply)), SLOT(originFinished(HttpReply)));
@@ -25,7 +29,31 @@ WrappedHttpReply::WrappedHttpReply(LocalCache *cache, const QByteArray &key, Htt
 
 void WrappedHttpReply::originFinished(const HttpReply &reply) {
     qDebug() << reply.statusCode() << reply.url();
-    if (reply.isSuccessful()) cache->insert(key, reply.body());
+    bool doCache = reply.isSuccessful();
+
+    if (doCache) {
+        const auto &validators = cachedHttp.getValidators();
+        if (!validators.isEmpty()) {
+            const QByteArray &mime = reply.header("Content-Type");
+            auto i = validators.constFind(mime);
+            if (i != validators.constEnd()) {
+                auto validator = i.value();
+                doCache = validator(reply);
+            } else {
+                i = validators.constFind("*");
+                if (i != validators.constEnd()) {
+                    auto validator = i.value();
+                    doCache = validator(reply);
+                }
+            }
+        }
+    }
+
+    if (doCache)
+        cache->insert(key, reply.body());
+    else
+        qDebug() << "Not caching" << reply.statusCode() << reply.url();
+
     emit finished(reply);
 }
 
@@ -54,7 +82,7 @@ HttpReply *CachedHttp::request(const HttpRequest &req) {
         return new CachedHttpReply(value, req);
     }
     qDebug() << "MISS" << key << req.url;
-    return new WrappedHttpReply(cache, key, http.request(req));
+    return new WrappedHttpReply(*this, cache, key, http.request(req));
 }
 
 QByteArray CachedHttp::requestHash(const HttpRequest &req) {

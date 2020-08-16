@@ -12,6 +12,7 @@ public:
     void setMaxSize(uint maxSize);
     void setCachePostRequests(bool value) { cachePostRequests = value; }
     void setIgnoreHostname(bool value) { ignoreHostname = value; }
+    auto &getValidators() { return validators; };
     HttpReply *request(const HttpRequest &req);
 
 private:
@@ -21,6 +22,10 @@ private:
     LocalCache *cache;
     bool cachePostRequests;
     bool ignoreHostname = false;
+
+    /// Mapping is MIME -> validating function
+    /// Using * as MIME to define a catch all validator
+    QMap<QByteArray, std::function<bool(const HttpReply &)>> validators;
 };
 
 class CachedHttpReply : public HttpReply {
@@ -44,7 +49,10 @@ class WrappedHttpReply : public HttpReply {
     Q_OBJECT
 
 public:
-    WrappedHttpReply(LocalCache *cache, const QByteArray &key, HttpReply *httpReply);
+    WrappedHttpReply(CachedHttp &cachedHttp,
+                     LocalCache *cache,
+                     const QByteArray &key,
+                     HttpReply *httpReply);
     QUrl url() const { return httpReply->url(); }
     int statusCode() const { return httpReply->statusCode(); }
     QByteArray body() const { return httpReply->body(); }
@@ -53,6 +61,7 @@ private slots:
     void originFinished(const HttpReply &reply);
 
 private:
+    CachedHttp &cachedHttp;
     LocalCache *cache;
     QByteArray key;
     HttpReply *httpReply;
