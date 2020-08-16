@@ -24,7 +24,7 @@ private:
     bool ignoreHostname = false;
 
     /// Mapping is MIME -> validating function
-    /// Using * as MIME to define a catch all validator
+    /// Use * as MIME to define a catch-all validator
     QMap<QByteArray, std::function<bool(const HttpReply &)>> validators;
 };
 
