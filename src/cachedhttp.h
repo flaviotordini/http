@@ -32,8 +32,8 @@ class CachedHttpReply : public HttpReply {
     Q_OBJECT
 
 public:
-    CachedHttpReply(const QByteArray &body, const HttpRequest &req);
-    QUrl url() const { return req.url; }
+    CachedHttpReply(const QByteArray &body, const QUrl &url, bool autoSignals = true);
+    QUrl url() const { return requestUrl; }
     int statusCode() const { return 200; }
     QByteArray body() const;
 
@@ -42,7 +42,7 @@ private slots:
 
 private:
     const QByteArray bytes;
-    const HttpRequest req;
+    const QUrl requestUrl;
 };
 
 class WrappedHttpReply : public HttpReply {

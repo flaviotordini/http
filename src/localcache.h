@@ -18,6 +18,7 @@ public:
     void setMaxSize(uint value) { maxSize = value; }
 
     QByteArray value(const QByteArray &key);
+    QByteArray possiblyStaleValue(const QByteArray &key);
     void insert(const QByteArray &key, const QByteArray &value);
     void clear();
 

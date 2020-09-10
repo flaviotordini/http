@@ -56,7 +56,22 @@ QByteArray LocalCache::value(const QByteArray &key) {
 
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << __PRETTY_FUNCTION__ << file.fileName() << file.errorString();
+        qWarning() << file.fileName() << file.errorString();
+#ifndef QT_NO_DEBUG_OUTPUT
+        misses++;
+#endif
+        return QByteArray();
+    }
+#ifndef QT_NO_DEBUG_OUTPUT
+    hits++;
+#endif
+    return file.readAll();
+}
+
+QByteArray LocalCache::possiblyStaleValue(const QByteArray &key) {
+    const QString path = cachePath(key);
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly)) {
 #ifndef QT_NO_DEBUG_OUTPUT
         misses++;
 #endif
