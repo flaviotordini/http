@@ -97,7 +97,7 @@ HttpReply *CachedHttp::request(const HttpRequest &req) {
         qDebug() << "HIT" << key << req.url;
         return new CachedHttpReply(value, req.url);
     }
-    qDebug() << "MISS" << key << req.url;
+    // qDebug() << "MISS" << key << req.url;
     return new WrappedHttpReply(*this, cache, key, http.request(req));
 }
 
