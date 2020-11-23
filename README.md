@@ -9,6 +9,7 @@ This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it i
 - Easier POST requests
 - Read timeouts (don't let your requests get stuck forever). (now supported by Qt >= 5.15)
 - Redirection support (now supported by Qt >= 5.6)
+- Disk-based cache implementation similar to Qt's but not strictly a HTTP cache, i.e. it ignores HTTP headers. This is good if want to cache successful requests irrespective of what the origin server says you should do. The cache also fallbacks to stale content when the server returns an error.
 
 ## Design
 
