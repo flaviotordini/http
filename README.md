@@ -98,6 +98,19 @@ connect(reply, &HttpReply::finished, this, [](auto &reply) {
 });
 ```
 
+Or using two separate signals for success and failure:
+```
+#include "http.h"
+
+auto reply = Http::instance().get("https://google.com/");
+connect(reply, &HttpReply::data, this, [](auto &bytes) {
+    qDebug() << "Feel the bytes!" << bytes;
+});
+connect(reply, &HttpReply::error, this, [](auto &msg) {
+    qDebug() << "Something's wrong here" << msg;
+});
+```
+
 This is a real-world example of building a Http object with more complex features. It throttles requests, uses a custom user agent and caches results:
 
 ```
