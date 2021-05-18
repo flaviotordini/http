@@ -54,6 +54,7 @@ void NetworkHttpReply::emitFinished() {
 }
 
 void NetworkHttpReply::replyFinished() {
+#if QT_VERSION < QT_VERSION_CHECK(5, 9, 0)
     QUrl redirection = networkReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (redirection.isValid()) {
         HttpRequest redirectReq;
@@ -71,6 +72,7 @@ void NetworkHttpReply::replyFinished() {
         readTimeoutTimer->start();
         return;
     }
+#endif
 
     if (isSuccessful()) {
         bytes = networkReply->readAll();

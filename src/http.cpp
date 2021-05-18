@@ -5,7 +5,13 @@
 namespace {
 
 QNetworkAccessManager *networkAccessManager() {
-    static thread_local QNetworkAccessManager *nam = new QNetworkAccessManager();
+    static thread_local QNetworkAccessManager *nam = [] {
+        auto nam = new QNetworkAccessManager();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
+        nam->setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
+#endif
+        return nam;
+    }();
     return nam;
 }
 
