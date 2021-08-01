@@ -18,8 +18,13 @@ NetworkHttpReply::NetworkHttpReply(const HttpRequest &req, Http &http)
 }
 
 void NetworkHttpReply::setupReply() {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    connect(networkReply, &QNetworkReply::errorOccurred, this, &NetworkHttpReply::replyError,
+            Qt::UniqueConnection);
+#else
     connect(networkReply, SIGNAL(error(QNetworkReply::NetworkError)),
             SLOT(replyError(QNetworkReply::NetworkError)), Qt::UniqueConnection);
+#endif
     connect(networkReply, SIGNAL(finished()), SLOT(replyFinished()), Qt::UniqueConnection);
     connect(networkReply, SIGNAL(downloadProgress(qint64, qint64)),
             SLOT(downloadProgress(qint64, qint64)), Qt::UniqueConnection);
