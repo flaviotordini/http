@@ -25,7 +25,7 @@ The constructor of these classes takes another Http instance for which they will
 In order to build this library you can use either `qmake` or `cmake`.
 
 ### qmake
-```
+```shell
 mkdir build
 cd build
 qmake ..
@@ -33,7 +33,7 @@ make
 ```
 
 ### CMake
-```
+```shell
 mkdir build
 cd build
 cmake ..
@@ -44,13 +44,13 @@ make
 
 You can use this library as a git submodule. For example, add it to your project inside a lib subdirectory:
 
-```
+```shell
 git submodule add -b master https://github.com/flaviotordini/http lib/http
 ```
 
 Then you can update your git submodules like this:
 
-```
+```shell
 git submodule update --init --recursive --remote
 ```
 
@@ -68,14 +68,14 @@ CONFIG += object_parallel_to_source
 
 If you are using CMake you can integrate the library by adding the following lines to your CMakeLists.txt:
 
-```
+```cmake
 add_subdirectory(lib/http)
 ...
 target_link_library(your_super_cool_project <other libraries> http)
 ```
 or if you have installed http you can find it via:
 
-```
+```cmake
 find_library(http REQUIRED)
 ...
 target_link_library(your_super_cool_project <other libraries> http)
@@ -86,7 +86,7 @@ target_link_library(your_super_cool_project <other libraries> http)
 
 A basic C++14 example:
 
-```
+```cpp
 #include "http.h"
 
 auto reply = Http::instance().get("https://google.com/");
@@ -100,7 +100,7 @@ connect(reply, &HttpReply::finished, this, [](auto &reply) {
 ```
 
 Or using two separate signals for success and failure:
-```
+```cpp
 #include "http.h"
 
 auto reply = Http::instance().get("https://google.com/");
@@ -114,7 +114,7 @@ connect(reply, &HttpReply::error, this, [](auto &msg) {
 
 This is a real-world example of building a Http object with more complex features. It throttles requests, uses a custom user agent and caches results:
 
-```
+```cpp
 #include "http.h"
 #include "cachedhttp.h"
 #include "throttledhttp.h"
@@ -138,7 +138,7 @@ Http &myHttp() {
 
 If the full power (and complexity) of QNetworkReply is needed you can always fallback to it:
 
-```
+```cpp
 #include "http.h"
 
 HttpRequest req;
