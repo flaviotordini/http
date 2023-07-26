@@ -12,7 +12,7 @@ public:
     void setMaxSize(uint maxSize);
     void setCachePostRequests(bool value) { cachePostRequests = value; }
     void setIgnoreHostname(bool value) { ignoreHostname = value; }
-    auto &getValidators() { return validators; };
+    auto &getValidators() { return validators; }
     HttpReply *request(const HttpRequest &req);
 
 private:
