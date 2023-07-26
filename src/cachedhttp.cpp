@@ -22,7 +22,7 @@ WrappedHttpReply::WrappedHttpReply(CachedHttp &cachedHttp,
                                    const QByteArray &key,
                                    HttpReply *httpReply)
     : HttpReply(httpReply), cachedHttp(cachedHttp), cache(cache), key(key), httpReply(httpReply) {
-    connect(httpReply, SIGNAL(finished(HttpReply)), SLOT(originFinished(HttpReply)));
+    connect(httpReply, &HttpReply::finished, this, &WrappedHttpReply::originFinished);
 }
 
 void WrappedHttpReply::originFinished(const HttpReply &reply) {
