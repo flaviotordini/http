@@ -94,7 +94,7 @@ HttpReply *CachedHttp::request(const HttpRequest &req) {
     const QByteArray key = requestHash(req);
     const QByteArray value = cache->value(key);
     if (!value.isNull()) {
-        qDebug() << "HIT" << key << req.url;
+        // qDebug() << "HIT" << key << req.url;
         return new CachedHttpReply(value, req.url);
     }
     // qDebug() << "MISS" << key << req.url;
