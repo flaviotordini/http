@@ -30,8 +30,8 @@ void ThrottledHttpReply::checkElapsed() {
             timer->setTimerType(Qt::PreciseTimer);
             connect(timer, SIGNAL(timeout()), SLOT(checkElapsed()));
         }
-        qDebug() << "Throttling" << req.url
-                 << QStringLiteral("%1ms").arg(milliseconds - elapsedSinceLastRequest);
+        // qDebug() << "Throttling" << req.url << QStringLiteral("%1ms").arg(milliseconds -
+        // elapsedSinceLastRequest);
         timer->setInterval(milliseconds - elapsedSinceLastRequest);
         timer->start();
         return;
