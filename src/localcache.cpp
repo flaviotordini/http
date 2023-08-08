@@ -84,7 +84,7 @@ QByteArray LocalCache::possiblyStaleValue(const QByteArray &key) {
 }
 
 void LocalCache::insert(const QByteArray &key, const QByteArray &value) {
-    qDebug() << "Inserting" << key;
+    // qDebug() << "Inserting" << key;
     const QString path = cachePath(key);
     const QString parentDir = path.left(path.lastIndexOf(QLatin1Char('/')));
     if (!QFile::exists(parentDir)) {
