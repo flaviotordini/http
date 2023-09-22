@@ -28,7 +28,7 @@ void ThrottledHttpReply::checkElapsed() {
             timer = new QTimer(this);
             timer->setSingleShot(true);
             timer->setTimerType(Qt::PreciseTimer);
-            connect(timer, SIGNAL(timeout()), SLOT(checkElapsed()));
+            connect(timer, &QTimer::timeout, this, &ThrottledHttpReply::checkElapsed);
         }
         // qDebug() << "Throttling" << req.url << QStringLiteral("%1ms").arg(milliseconds -
         // elapsedSinceLastRequest);
@@ -41,10 +41,10 @@ void ThrottledHttpReply::checkElapsed() {
 }
 
 void ThrottledHttpReply::doRequest() {
-    QObject *reply = http.request(req);
-    connect(reply, SIGNAL(data(QByteArray)), SIGNAL(data(QByteArray)));
-    connect(reply, SIGNAL(error(QString)), SIGNAL(error(QString)));
-    connect(reply, SIGNAL(finished(HttpReply)), SIGNAL(finished(HttpReply)));
+    auto reply = http.request(req);
+    connect(reply, &HttpReply::data, this, &HttpReply::data);
+    connect(reply, &HttpReply::error, this, &HttpReply::error);
+    connect(reply, &HttpReply::finished, this, &HttpReply::finished);
 
     // this will cause the deletion of this object once the request is finished
     setParent(reply);

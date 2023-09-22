@@ -13,7 +13,8 @@ NetworkHttpReply::NetworkHttpReply(const HttpRequest &req, Http &http)
     readTimeoutTimer = new QTimer(this);
     readTimeoutTimer->setInterval(http.getReadTimeout());
     readTimeoutTimer->setSingleShot(true);
-    connect(readTimeoutTimer, SIGNAL(timeout()), SLOT(readTimeout()), Qt::UniqueConnection);
+    connect(readTimeoutTimer, &QTimer::timeout, this, &NetworkHttpReply::readTimeout,
+            Qt::UniqueConnection);
     readTimeoutTimer->start();
 }
 
@@ -25,9 +26,10 @@ void NetworkHttpReply::setupReply() {
     connect(networkReply, SIGNAL(error(QNetworkReply::NetworkError)),
             SLOT(replyError(QNetworkReply::NetworkError)), Qt::UniqueConnection);
 #endif
-    connect(networkReply, SIGNAL(finished()), SLOT(replyFinished()), Qt::UniqueConnection);
-    connect(networkReply, SIGNAL(downloadProgress(qint64, qint64)),
-            SLOT(downloadProgress(qint64, qint64)), Qt::UniqueConnection);
+    connect(networkReply, &QNetworkReply::finished, this, &NetworkHttpReply::replyFinished,
+            Qt::UniqueConnection);
+    connect(networkReply, &QNetworkReply::downloadProgress, this,
+            &NetworkHttpReply::downloadProgress, Qt::UniqueConnection);
 }
 
 QString NetworkHttpReply::errorMessage() {
@@ -119,8 +121,8 @@ void NetworkHttpReply::downloadProgress(qint64 bytesReceived, qint64 /* bytesTot
     // qDebug() << "Downloading" << bytesReceived << bytesTotal << networkReply->url();
     if (bytesReceived > 0 && readTimeoutTimer->isActive()) {
         readTimeoutTimer->stop();
-        disconnect(networkReply, SIGNAL(downloadProgress(qint64, qint64)), this,
-                   SLOT(downloadProgress(qint64, qint64)));
+        disconnect(networkReply, &QNetworkReply::downloadProgress, this,
+                   &NetworkHttpReply::downloadProgress);
     }
 }
 
