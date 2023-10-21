@@ -137,13 +137,13 @@ This is a real-world example of building a Http object with more complex feature
 
 Http &myHttp() {
     static Http *http = [] {
-        Http *http = new Http;
+        auto http = new Http;
         http->addRequestHeader("User-Agent", userAgent());
 
-        ThrottledHttp *throttledHttp = new ThrottledHttp(*http);
+        auto throttledHttp = new ThrottledHttp(*http);
         throttledHttp->setMilliseconds(1000);
 
-        CachedHttp *cachedHttp = new CachedHttp(*throttledHttp, "mycache");
+        auto cachedHttp = new CachedHttp(*throttledHttp, "mycache");
         cachedHttp->setMaxSeconds(86400 * 30);
 
         return cachedHttp;
