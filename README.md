@@ -60,13 +60,13 @@ git submodule update --init --recursive --remote
 
 To integrate the library in your qmake based project just add this to your .pro file:
 
-```
+```qmake
 include(lib/http/http.pri)
 ```
 
 qmake builds all object files in the same directory. In order to avoid filename clashes use:
 
-```
+```qmake
 CONFIG += object_parallel_to_source
 ```
 
