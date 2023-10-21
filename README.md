@@ -114,6 +114,20 @@ connect(reply, &HttpReply::error, this, [](auto &msg) {
 });
 ```
 
+A POST example taking advantage of C++11 initializer lists:
+
+```cpp
+QUrl url("https://some.domain.url/");
+auto reply = Http::instance().post(url, {{"myparam", "paramvalue"}, {"otherparam", "foo"}});
+connect(reply, &HttpReply::finished, this, [](auto &reply) {
+    if (reply.isSuccessful()) {
+        qDebug() << "Feel the bytes!" << reply.body();
+    } else {
+        qDebug() << "Something's wrong here" << reply.statusCode() << reply.reasonPhrase();
+    }
+});
+```
+
 This is a real-world example of building a Http object with more complex features. It throttles requests, uses a custom user agent and caches results:
 
 ```cpp
