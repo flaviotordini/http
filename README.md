@@ -138,7 +138,7 @@ This is a real-world example of building a Http object with more complex feature
 Http &myHttp() {
     static Http *http = [] {
         auto http = new Http;
-        http->addRequestHeader("User-Agent", userAgent());
+        http->addRequestHeader("User-Agent", "MyUserAgent");
 
         auto throttledHttp = new ThrottledHttp(*http);
         throttledHttp->setMilliseconds(1000);
