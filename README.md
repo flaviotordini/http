@@ -99,7 +99,9 @@ connect(reply, &HttpReply::finished, this, [](auto &reply) {
 });
 ```
 
-Or using two separate signals for success and failure:
+It is important to use the reply object passed by the `finished` signal as it may be a different object than the one used to make the request. For example it may be created by `CacheHttp` or other specialized `Http` subclasses.
+
+Example using two separate signals for success and failure:
 ```cpp
 #include "http.h"
 
