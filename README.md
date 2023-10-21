@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://flavio.tordini.org/favicon-128.png">
+</p>
+
 # A wrapper for the Qt Network Access API
 
 This is just a wrapper around Qt's QNetworkAccessManager and friends. I use it in my apps at https://flavio.tordini.org . It has a simpler, higher-level API and some functionality not found in Qt:
