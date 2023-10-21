@@ -89,7 +89,7 @@ A basic C++14 example:
 ```cpp
 #include "http.h"
 
-auto reply = Http::instance().get("https://google.com/");
+auto reply = Http::instance().get("https://flavio.tordini.org/");
 connect(reply, &HttpReply::finished, this, [](auto &reply) {
     if (reply.isSuccessful()) {
         qDebug() << "Feel the bytes!" << reply.body();
